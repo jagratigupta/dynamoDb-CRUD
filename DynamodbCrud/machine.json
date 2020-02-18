@@ -1,0 +1,92 @@
+[
+      {
+        "EquipmentType": 2,
+        "SourceIdentifierKey": "deviceSerial",
+        "Version": 1,
+        "Supplier": "truring",
+        "Name": "Basic KPI dictionary",
+        "KPI": [
+          {
+            "Name": "partProduced",
+            "DisplayName": "Part Produced",
+            "Description": "Number of Parts Produced",
+            "Source": "Equipment",
+            "Precision": "0",
+            "Unit": "Count",
+            "ValueType": "Integer",
+            "Structure": "SCALAR",
+            "Type": "basic",
+            "Formula": "xx",
+            "AggregationMethod": "SUM",
+            "Dur": 60,
+            "ErrorCondition": [
+              {
+                "Operator": "GreaterThan",
+                "Value": "40",
+                "Action": "RaiseAlarm"
+              }
+            ],
+            "Availability": {
+              "Hourly": [
+                "Equipment"
+              ],
+              "Dailly": [
+                "Equipment",
+                "Zone",
+                "Site"
+              ],
+              "Weekly": [
+                "Zone",
+                "Site",
+                "Factory"
+              ],
+              "Monthly": [
+                "Site",
+                "Factory"
+              ]
+            }
+          },
+          {
+            "Name": "powerUsed",
+            "DisplayName": "Power Usage",
+            "Description": "Average Power Used",
+            "Source": "Equipment",
+            "Precision": "2",
+            "Unit": "Rs",
+            "ValueType": "Float",
+            "Structure": "SCALAR",
+            "Type": "basic",
+            "Formula": "xx",
+            "AggregationMethod": "Average",
+            "Duration": 60,
+            "ErrorCondition": [
+              {
+                "Operator": "GreaterThan",
+                "Value": "40",
+                "Action": "RaiseAlarm"
+              }
+            ],
+            "Availability": {
+              "Hourly": [
+                "Equipment"
+              ],
+              "Dailly": [
+                "Equipment",
+                "Zone",
+                "Site"
+              ],
+              "Weekly": [
+                "Zone",
+                "Site",
+                "Factory"
+              ],
+              "Monthly": [
+                "Site",
+                "Factory"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+   

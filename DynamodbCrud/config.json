@@ -1,0 +1,9 @@
+{
+    "dynamoDb" : {
+        "region" : "us-east-2",
+        "accessKeyId" :"AKIA3PVHN52262D4J5FL",
+        "secretAccessKey" : "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"
+    }
+    
+}
+ 
