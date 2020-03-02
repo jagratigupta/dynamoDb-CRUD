@@ -1,0 +1,23 @@
+{
+  "name": "smart_factory",
+  "version": "1.0.0",
+  "description": "backend",
+  "main": "app.js",
+  "scripts": {
+    "test": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "sprint-1"
+  },
+  "keywords": [
+    "data"
+  ],
+  "author": "Amit Ghanghas",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.630.0",
+    "express": "^4.17.1",
+    "node": "^13.9.0"
+  }
+}
