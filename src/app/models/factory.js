@@ -3,6 +3,7 @@ var config = require('../../../config.json');
 var fs = require('fs');
 AWS.config.update(config);
 
+
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 /////////////////////Read an Item///////////////////////

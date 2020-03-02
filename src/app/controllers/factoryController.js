@@ -3,7 +3,8 @@ var router = express.Router();
 
 const factory = require('../models/factory')
 
-router.get('/read',(req,res,next) => {
+router.get('/',(req,res,next) => {
+    console.log("step-1",req.query);
     factory.read(req,(err,result) =>{
         if(err){
             res.status(rs.resCodes.error.code).json(rs.errRes(err));
