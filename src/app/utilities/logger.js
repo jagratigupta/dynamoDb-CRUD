@@ -1,5 +1,5 @@
 const apm = require('elastic-apm-node').start({ 
-    serviceName: 'Mock Test Platform',
+    serviceName: 'Smart Factory',
     secretToken: '',
     // serverUrl: 'http://172.31.4.249:8200'
     serverUrl: 'http://52.66.251.85:8200'
