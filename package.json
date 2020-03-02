@@ -2,9 +2,10 @@
   "name": "smart_factory",
   "version": "1.0.0",
   "description": "backend",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "test": "node app.js"
+    "test": "test",
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
@@ -14,7 +15,10 @@
     "data"
   ],
   "author": "Amit Ghanghas",
-  "license": "ISC",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
   "dependencies": {
     "aws-sdk": "^2.630.0",
     "express": "^4.17.1",
