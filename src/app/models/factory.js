@@ -6,7 +6,7 @@ AWS.config.update(config);
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 /////////////////////Read an Item///////////////////////
-function read(callback){
+function read(req,callback){
     try {
         var table = "factory";
         var params = {
@@ -20,14 +20,14 @@ function read(callback){
         docClient.get(params, (err, data) => {
             if (err) {
                 console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
-                callback(error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2)))
+                return callback(error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2)))
             } else {
                 console.log("GetItem succeeded:", JSON.stringify(data, null, 2));
-                callback(null,data)
+                return callback(null,data)
             }
         });
     } catch (error) {
-        callback(error)
+        return callback(error)
     }
 }
 

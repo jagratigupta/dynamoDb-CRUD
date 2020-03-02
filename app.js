@@ -16,5 +16,6 @@ app.use('/factory',factory);
 //     explorer: true
 // };
 // app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument.sw, options));
-
+const port = process.env.PORT || 8080;
+app.listen(port, () => console.log(`Listening on port ${port}..`));
 module.exports = app;
