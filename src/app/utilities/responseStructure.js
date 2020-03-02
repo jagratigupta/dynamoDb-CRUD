@@ -1,4 +1,4 @@
-var logger = require("../utilities/logger");
+var logger = require("../../config/logger");
 // var logger = winston.logger;
 let resCodes = {
     badRequest: { code: 400, message: "There are some un-acceptable params in your request" },

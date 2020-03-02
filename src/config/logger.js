@@ -9,7 +9,7 @@ const apm = require('elastic-apm-node').start({
   const winston = require("winston");
   const wLogger = winston.createLogger();
   
-    var client = require('./connectElastic');
+    var client = require('../app/utilities/connectElastic');
     var winston_elasticsearch = require('winston-elasticsearch');
   
     function logger(collection="mtp_application_logs") {
