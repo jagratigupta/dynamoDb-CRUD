@@ -1,7 +1,20 @@
 var express = require('express');
+const factory = require('./src/app/controllers/factoryController');
+const bodyParser=require("body-parser"); 
+// const swaggerUi = require('swagger-ui-express');
+// const swaggerDocument = require('./swagger/swagger');
 const app = express();
-var aws_router = require('./aws');
-app.use('/aws', aws_router);
-console.log('IN APP.JS')
-//npm install aws-sdk
-//visit http://localhost:3000/aws/table-list
+const http = require("http")
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
+
+
+app.use('/factory',factory);
+
+// var options = {
+//     explorer: true
+// };
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument.sw, options));
+
+module.exports = app;
