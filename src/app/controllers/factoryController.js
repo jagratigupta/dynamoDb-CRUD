@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var rs = require('../utilities/responseStructure');
 
 const factory = require('../models/factory')
 

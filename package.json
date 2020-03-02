@@ -19,12 +19,12 @@
   },
   "author": "Amit Ghanghas",
   "license": "MIT",
-
   "dependencies": {
-    
     "aws-sdk": "^2.630.0",
+    "elasticsearch": "^16.6.0",
     "express": "^4.17.1",
-    "node": "^13.9.0"
-  
+    "node": "^13.9.0",
+    "winston": "^3.2.1",
+    "winston-elasticsearch": "^0.8.4"
   }
 }
