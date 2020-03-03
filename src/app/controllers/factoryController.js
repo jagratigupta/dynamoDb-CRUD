@@ -16,5 +16,16 @@ router.get('/read',(req,res,next) => {
     })
 })
 
-
+router.put('/write',(req,res,next) => {
+    factory.write(req,(err,result) =>{
+        if(err){
+            //res.status(rs.resCodes.error.code).json(rs.errRes(err));
+            res.send(err);
+        }
+        else{
+            // res.status(rs.resCodes[req.method].code).json(rs.successObjRes(result));
+            res.status(200).json(result);
+        }
+    })
+})
 module.exports = router;

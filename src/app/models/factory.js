@@ -31,6 +31,36 @@ function read(req,callback){
     }
 }
 
+function write(req,callback) {
+    try {
+        console.log("Importing factory data into DynamoDB. Please wait.");
+        var created_at = Date.now();
+        var params = {
+            TableName: "factory",
+            Item: {
+                "factory_id": req.factory_id,
+                "location": req.location,
+                "created_at": created_at
+            }
+        };
+
+        docClient.put(params, function (err, data) {
+            if (err) {
+                console.error("Unable to put factory data",". Error JSON:", JSON.stringify(err, null, 2));
+                return callback(new error("Unable to put machine data",". Error JSON:", JSON.stringify(err, null, 2)))
+            } else {
+                console.log("PutItem succeeded",data);
+                return callback(null,data)
+            }
+        });
+    } catch (error) {
+        callback(error)
+    }
+    
+}
+
+
 module.exports = {
-read : read
+  read : read,  
+  write : write,
 }
