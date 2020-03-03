@@ -1,7 +1,8 @@
 var AWS = require('aws-sdk');
-var config = require('../../../config.json');
+var config = require('../../config/config.json');
 var fs = require('fs');
 AWS.config.update(config);
+
 
 var docClient = new AWS.DynamoDB.DocumentClient();
 

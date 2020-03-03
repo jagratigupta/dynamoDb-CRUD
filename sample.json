@@ -1,25 +1,92 @@
-{
-    "year" : 2013,
-    "title" : "Turn It Down, Or Else!",
-    "info" : {
-        "directors" : [
-            "Alice Smith",
-            "Bob Jones"
-        ],
-        "release_date" : "2013-01-18T00:00:00Z",
-        "rating" : 6.2,
-        "genres" : [
-            "Comedy",
-            "Drama"
-        ],
-        "image_url" : "http://ia.media-imdb.com/images/N/O9ERWAU7FS797AJ7LU8HN09AMUP908RLlo5JF90EWR7LJKQ7@@._V1_SX400_.jpg",
-        "plot" : "A rock band plays their music at high volumes, annoying the neighbors.",
-        "rank" : 11,
-        "running_time_secs" : 5215,
-        "actors" : [
-            "David Matthewman",
-            "Ann Thomas",
-            "Jonathan G. Neff"
-       ]
+[
+    {
+      "EquipmentType": 2,
+      "SourceIdentifierKey": "deviceSerial",
+      "Version": 1,
+      "Supplier": "truring",
+      "Name": "Basic KPI dictionary",
+      "KPI": [
+        {
+          "Name": "partProduced",
+          "DisplayName": "Part Produced",
+          "Description": "Number of Parts Produced",
+          "Source": "Equipment",
+          "Precision": "0",
+          "Unit": "Count",
+          "ValueType": "Integer",
+          "Structure": "SCALAR",
+          "Type": "basic",
+          "Formula": "xx",
+          "AggregationMethod": "SUM",
+          "Dur": 60,
+          "ErrorCondition": [
+            {
+              "Operator": "GreaterThan",
+              "Value": "40",
+              "Action": "RaiseAlarm"
+            }
+          ],
+          "Availability": {
+            "Hourly": [
+              "Equipment"
+            ],
+            "Dailly": [
+              "Equipment",
+              "Zone",
+              "Site"
+            ],
+            "Weekly": [
+              "Zone",
+              "Site",
+              "Factory"
+            ],
+            "Monthly": [
+              "Site",
+              "Factory"
+            ]
+          }
+        },
+        {
+          "Name": "powerUsed",
+          "DisplayName": "Power Usage",
+          "Description": "Average Power Used",
+          "Source": "Equipment",
+          "Precision": "2",
+          "Unit": "Rs",
+          "ValueType": "Float",
+          "Structure": "SCALAR",
+          "Type": "basic",
+          "Formula": "xx",
+          "AggregationMethod": "Average",
+          "Duration": 60,
+          "ErrorCondition": [
+            {
+              "Operator": "GreaterThan",
+              "Value": "40",
+              "Action": "RaiseAlarm"
+            }
+          ],
+          "Availability": {
+            "Hourly": [
+              "Equipment"
+            ],
+            "Dailly": [
+              "Equipment",
+              "Zone",
+              "Site"
+            ],
+            "Weekly": [
+              "Zone",
+              "Site",
+              "Factory"
+            ],
+            "Monthly": [
+              "Site",
+              "Factory"
+            ]
+          }
+        }
+      ]
     }
-}
+  ]
+ 
