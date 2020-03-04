@@ -32,4 +32,35 @@ router.post('/write',(req,res,next) => {
         }
     })
 })
+//UPDATE
+
+router.post('/update',(req,res,next) => {
+    zone.update(req,(err,result) =>{
+        if(err){
+            //res.status(rs.resCodes.error.code).json(rs.errRes(err));
+            res.status(500).send(err)
+        }
+        else{
+            //res.status(rs.resCodes[req.method].code).json(rs.successObjRes(result));
+            res.status(201).send(JSON.stringify(result))
+        }
+    })
+})
+
+//Delete
+
+
+
+router.post('/delete',(req,res,next) => {
+    zone.del(req,(err,result) =>{
+        if(err){
+            //res.status(rs.resCodes.error.code).json(rs.errRes(err));
+            res.status(500).send(err)
+        }
+        else{
+            //res.status(rs.resCodes[req.method].code).json(rs.successObjRes(result));
+            res.status(201).send(JSON.stringify(result))
+        }
+    })
+})
 module.exports = router;

@@ -9,15 +9,16 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 /////////////////////Read an Item///////////////////////
 function read(req,callback){
     try {
-        var table = "site"
+        var table = "site1"
         var params = {
             TableName: table,
             Key: {
                 "site_id": "cyberhub",
-                "factory_id": "truring",
+                 "factory_id": "truring",
             }
         };
 
+//docClient.scan it reads all data from file 
         docClient.get(params, (err, data) => {
             if (err) {
                 console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2))
@@ -38,7 +39,7 @@ function write(req,callback) {
         var created_at = Date.now();
         console.log("timeStamp",created_at);
         var params = {
-            TableName: "site",
+            TableName: "site1",
             Item: {
                 "site_id": req.body.site_id,
                 "factory_id": req.body.factory_id,
@@ -63,16 +64,21 @@ function write(req,callback) {
     }
     
 }
-
+//Update
 
 function update(req,callback){
     try {
-        var table = "site";
+        var table = "site1";
+        var p=req.body;
+        console.log(p)
         var params = {
             TableName:table,
             Key:{
-                "site_id": site_id,
-                "factory_id": factory_id
+                "site_id": req.body.site_id,
+                "factory_id": req.body.factory_id,
+            },
+            Item: {
+                "col":p.location
             },
             // UpdateExpression: "set info.rating = :r, info.plot=:p, info.actors=:a",
             // ExpressionAttributeValues:{
@@ -98,10 +104,11 @@ function update(req,callback){
 
 
 /////////////////////////delete item///////////////////////////
-function del(obj,callback) {
+function del(req,callback) {
     try {
-        var table ='site'
+        var table ='site1'
 
+        console.log("fcdgfwcdwd"+req.body.site_id)
         var params = {
             TableName: table,
             Key: {
@@ -120,7 +127,9 @@ function del(obj,callback) {
                 console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
                 callback(error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2)))
             } else {
-                console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+                if(Object.keys(data).length>1)
+                    console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+                else console.log("no item")
             }
         });
 
@@ -135,5 +144,5 @@ module.exports = {
   read : read,  
   write : write,
   del : del,
-  upadte:update
+  update:update
 }

@@ -13,7 +13,7 @@ function read(req,callback){
         var params = {
             TableName: table,
             Key: {
-                "machine_ID":"Mcahine_ID",
+                "machine_id":"Mcahine_id",
                 "time" :"time"
             }
         };
@@ -35,24 +35,19 @@ function read(req,callback){
 function write(req,callback) {
     try {
         console.log("Importing MachineKPI data into DynamoDB. Please wait.");
-        var created_at = Date.now();
-        console.log("timeStamp",created_at);
+        //console.log("timeStamp",created_at);
         var params = {
-            TableName: "site",
+            TableName: "machineKPI",
             Item: {
-                "machine_ID": req.body.machine_ID,
+                "machine_id": req.body.machine_id,
                "time": req.body.time,
-                "KPI1":req.body.location,
-                "updated_at":req.body.updated_at,
-                "created_at": created_at,
-                "address":req.body.address
             }
         };
 
         docClient.put(params, function (err, data) {
             if (err) {
-                console.error("Unable to put site data",". Error JSON:", JSON.stringify(err, null, 2));
-                return callback(new error("Unable to put site data",". Error JSON:", JSON.stringify(err, null, 2)))
+                console.error("Unable to put machineKPI data",". Error JSON:", JSON.stringify(err, null, 2));
+                return callback(new error("Unable to put MachineKPI data",". Error JSON:", JSON.stringify(err, null, 2)))
             } else {
                 console.log("PutItem succeeded",data);
                 return callback(null,data)
@@ -67,19 +62,13 @@ function write(req,callback) {
 
 function update(req,callback){
     try {
-        var table = "site";
+        var table = "machineKPI";
         var params = {
             TableName:table,
             Key:{
-                "site_id": site_id,
-                "factory_id": factory_id
+                "machine_id":"mcahine_id",
+                "time" :"time"
             },
-            // UpdateExpression: "set info.rating = :r, info.plot=:p, info.actors=:a",
-            // ExpressionAttributeValues:{
-            //     ":r":5.5,
-            //     ":p":"Everything happens all at once.",
-            //     ":a":["Larry", "Moe", "Curly"]
-            // },
             ReturnValues:"UPDATED_NEW"
         };
         
@@ -100,18 +89,13 @@ function update(req,callback){
 /////////////////////////delete item///////////////////////////
 function del(obj,callback) {
     try {
-        var table ='site'
-
+        var table ='machineKPI'
         var params = {
             TableName: table,
             Key: {
-                "site_id": req.body.site_id,
-                "factory_id": req.body.factory_id
+                "machine_id": req.body.machine_id,
+                "time": req.body.time
             },
-           // ConditionExpression: "",
-            // ExpressionAttributeValues: {
-            //     ":val": 50
-            // }
         };
 
         console.log("Attempting a conditional delete...");
@@ -120,7 +104,9 @@ function del(obj,callback) {
                 console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
                 callback(error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2)))
             } else {
-                console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+                if(Object.keys(data).length>1)
+                    console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+                else console.log("no item")
             }
         });
 
@@ -135,5 +121,5 @@ module.exports = {
   read : read,  
   write : write,
   del : del,
-  upadte:update
+  update:update
 }

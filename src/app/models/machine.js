@@ -134,7 +134,9 @@ function del(obj,callback) {
                 console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
                 callback(error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2)))
             } else {
-                console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+                if(Object.keys(data).length>1)
+                    console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+                else console.log("no item")
             }
         });
 
@@ -151,3 +153,7 @@ module.exports = {
   scan : scan,
   del : del
 }
+
+
+
+//docClient.scan

@@ -9,12 +9,11 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 /////////////////////Read an Item///////////////////////
 function read(req,callback){
     try {
-        var table = "factory"
+        var table = "machineParameters"
         var params = {
             TableName: table,
             Key: {
-                "factory_id": "truminds",
-                "location": 'hydra'
+                "machine_id":"machine"
             }
         };
 
@@ -31,25 +30,22 @@ function read(req,callback){
         return callback(error)
     }
 }
-
+// INSERTION
 function write(req,callback) {
     try {
-        console.log("Importing factory data into DynamoDB. Please wait.");
-        var created_at = Date.now();
-        console.log("timeStamp",created_at);
+        console.log("Importing MachineKPI data into DynamoDB. Please wait.");
+        //console.log("timeStamp",created_at);
         var params = {
-            TableName: "factory",
+            TableName: "machineParameters",
             Item: {
-                "factory_id": req.body.factory_id,
-                "location": req.body.location,
-                "created_at": created_at
+                "machine_id": req.body.machine_id
             }
         };
 
         docClient.put(params, function (err, data) {
             if (err) {
-                console.error("Unable to put factory data",". Error JSON:", JSON.stringify(err, null, 2));
-                return callback(new error("Unable to put machine data",". Error JSON:", JSON.stringify(err, null, 2)))
+                console.error("Unable to put machineParameters data",". Error JSON:", JSON.stringify(err, null, 2));
+                return callback(new error("Unable to put MachineParameters data",". Error JSON:", JSON.stringify(err, null, 2)))
             } else {
                 console.log("PutItem succeeded",data);
                 return callback(null,data)
@@ -61,22 +57,15 @@ function write(req,callback) {
     
 }
 
-
+// UPDATE   
 function update(req,callback){
     try {
-        var table = "factory";
+        var table = "machineParameters";
         var params = {
             TableName:table,
             Key:{
-                "factory_id": "truminds",
-                "location": 'hydra'
+                "machine_id": req.body.machine_id
             },
-            // UpdateExpression: "set info.rating = :r, info.plot=:p, info.actors=:a",
-            // ExpressionAttributeValues:{
-            //     ":r":5.5,
-            //     ":p":"Everything happens all at once.",
-            //     ":a":["Larry", "Moe", "Curly"]
-            // },
             ReturnValues:"UPDATED_NEW"
         };
         
@@ -94,21 +83,15 @@ function update(req,callback){
 }
 
 
-/////////////////////////delete item///////////////////////////
+// Delete Item
 function del(obj,callback) {
     try {
-        var table ='factory'
-
+        var table ='machineParameters'
         var params = {
             TableName: table,
             Key: {
-                "factory_id": req.body.factory_id,
-                "location": req.body.location
+                "machine_id": req.body.machine_id,
             },
-           // ConditionExpression: "",
-            // ExpressionAttributeValues: {
-            //     ":val": 50
-            // }
         };
 
         console.log("Attempting a conditional delete...");
@@ -120,6 +103,7 @@ function del(obj,callback) {
                 if(Object.keys(data).length>1)
                     console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
                 else console.log("no item")
+                
             }
         });
 
@@ -133,5 +117,6 @@ function del(obj,callback) {
 module.exports = {
   read : read,  
   write : write,
-  del : del
+  del : del,
+  update:update
 }

@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var rs = require('../utilities/responseStructure');
-
-const site = require('../models/site')
+// machp==MachineParameters
+const machp = require('../models/machineParameters')
 
 
 //get api controller of factory
 router.get('/read',(req,res,next) => {
     console.log("step-1",req.query);
-    site.read(req,(err,result) =>{
+    machp.read(req,(err,result) =>{
         if(err){
             //res.status(rs.resCodes.error.code).json(rs.errRes(err));
             res.status(500).send(err)
@@ -20,9 +20,10 @@ router.get('/read',(req,res,next) => {
         }
     })
 })
+// write 
 
 router.post('/write',(req,res,next) => {
-    site.write(req,(err,result) =>{
+    machp.write(req,(err,result) =>{
         if(err){
             //res.status(rs.resCodes.error.code).json(rs.errRes(err));
             res.status(500).send(err)
@@ -33,10 +34,11 @@ router.post('/write',(req,res,next) => {
         }
     })
 })
+
 //UPDATE
 
 router.post('/update',(req,res,next) => {
-    site.update(req,(err,result) =>{
+    machp.update(req,(err,result) =>{
         if(err){
             //res.status(rs.resCodes.error.code).json(rs.errRes(err));
             res.status(500).send(err)
@@ -53,7 +55,7 @@ router.post('/update',(req,res,next) => {
 
 
 router.post('/delete',(req,res,next) => {
-    site.del(req,(err,result) =>{
+    machp.del(req,(err,result) =>{
         if(err){
             //res.status(rs.resCodes.error.code).json(rs.errRes(err));
             res.status(500).send(err)
