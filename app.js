@@ -1,6 +1,7 @@
 var express = require('express');
 const factory = require('./src/app/controllers/factoryController');
 const site = require('./src/app/controllers/siteController');
+//const machine = require('./src/app/controllers/machineController');
 
 const zone = require('./src/app/controllers/zoneController');
 const bodyParser=require("body-parser"); 
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 
 app.use('/site',site);
+app.use('/machine',machine);
 
 app.use('/factory',factory);
 app.use('/zone',zone)

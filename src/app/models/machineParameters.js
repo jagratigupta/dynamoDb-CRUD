@@ -9,12 +9,11 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 /////////////////////Read an Item///////////////////////
 function read(req,callback){
     try {
-        var table = "machineKPI"
+        var table = "machineParameters"
         var params = {
             TableName: table,
             Key: {
-                "machine_id":"Mcahine_id",
-                "time" :"time"
+                "machine_id":"machine"
             }
         };
 
@@ -31,23 +30,22 @@ function read(req,callback){
         return callback(error)
     }
 }
-
+// INSERTION
 function write(req,callback) {
     try {
         console.log("Importing MachineKPI data into DynamoDB. Please wait.");
         //console.log("timeStamp",created_at);
         var params = {
-            TableName: "machineKPI",
+            TableName: "machineParameters",
             Item: {
-                "machine_id": req.body.machine_id,
-               "time": req.body.time,
+                "machine_id": req.body.machine_id
             }
         };
 
         docClient.put(params, function (err, data) {
             if (err) {
-                console.error("Unable to put machineKPI data",". Error JSON:", JSON.stringify(err, null, 2));
-                return callback(new error("Unable to put MachineKPI data",". Error JSON:", JSON.stringify(err, null, 2)))
+                console.error("Unable to put machineParameters data",". Error JSON:", JSON.stringify(err, null, 2));
+                return callback(new error("Unable to put MachineParameters data",". Error JSON:", JSON.stringify(err, null, 2)))
             } else {
                 console.log("PutItem succeeded",data);
                 return callback(null,data)
@@ -59,15 +57,14 @@ function write(req,callback) {
     
 }
 
-
+// UPDATE   
 function update(req,callback){
     try {
-        var table = "machineKPI";
+        var table = "machineParameters";
         var params = {
             TableName:table,
             Key:{
-                "machine_id":"mcahine_id",
-                "time" :"time"
+                "machine_id": req.body.machine_id
             },
             ReturnValues:"UPDATED_NEW"
         };
@@ -86,15 +83,14 @@ function update(req,callback){
 }
 
 
-/////////////////////////delete item///////////////////////////
+// Delete Item
 function del(obj,callback) {
     try {
-        var table ='machineKPI'
+        var table ='machineParameters'
         var params = {
             TableName: table,
             Key: {
                 "machine_id": req.body.machine_id,
-                "time": req.body.time
             },
         };
 
@@ -107,6 +103,7 @@ function del(obj,callback) {
                 if(Object.keys(data).length>1)
                     console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
                 else console.log("no item")
+                
             }
         });
 

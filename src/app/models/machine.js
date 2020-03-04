@@ -151,3 +151,7 @@ module.exports = {
   scan : scan,
   del : del
 }
+
+
+
+//docClient.scan
