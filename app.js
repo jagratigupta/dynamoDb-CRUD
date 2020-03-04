@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/site',site);
 
-//app.use('/factory',factory);
+app.use('/factory',factory);
 app.use('/zone',zone)
 // var options = {
 //     explorer: true
