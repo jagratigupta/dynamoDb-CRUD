@@ -32,17 +32,66 @@ function read(req,callback){
     }
 }
 
+////////////scan all items in table////////////////
+function scan(callback) {
+    try {
+        var params = {
+            TableName: "factory",
+            ProjectionExpression: "#id, location",
+            //FilterExpression: "#yr between :start_yr and :end_yr",
+            ExpressionAttributeNames: {
+                "#id": "factory_id"
+            },
+            /* ExpressionAttributeValues: {
+                  ":start_yr": 1950,
+                  ":end_yr": 1959 
+             } */
+        };
+    
+        console.log("Scanning factory table.");
+        docClient.scan(params, onScan);
+    
+        function onScan(err, data) {
+            if (err) {
+                console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+                return callback(err);
+            } else {
+                // print all the machines data
+                console.log("Scan succeeded.");
+                data.Items.forEach(function (factory) {
+                    console.log(factory.factory_id + ": ", "Key", factory.location);
+                });
+    
+                // continue scanning if we have more machines, because
+                // scan can retrieve a maximum of 1MB of data
+                if (typeof data.LastEvaluatedKey != "undefined") {
+                    console.log("Scanning for more...");
+                    params.ExclusiveStartKey = data.LastEvaluatedKey;
+                    docClient.scan(params, onScan);
+                }
+                callback(null,data)
+            }
+        }
+    } catch (error) {
+        callback(error)
+    }
+    
+}
+
+
+
 function write(req,callback) {
     try {
         console.log("Importing factory data into DynamoDB. Please wait.");
-        var created_at = Date.now();
+        var created_at = updated_at = Date.now();
         console.log("timeStamp",created_at);
         var params = {
             TableName: "factory",
             Item: {
                 "factory_id": req.body.factory_id,
                 "location": req.body.location,
-                "created_at": created_at
+                "created_at": created_at,
+                "updated_at" : updated_at
             }
         };
 
@@ -61,22 +110,20 @@ function write(req,callback) {
     
 }
 
-
 function update(req,callback){
     try {
         var table = "factory";
+        var updated_at = Date.now()
         var params = {
             TableName:table,
             Key:{
-                "year": year,
-                "title": title
+                "factory_id": req.body.factory_id,
+                "location": req.body.location
             },
-            // UpdateExpression: "set info.rating = :r, info.plot=:p, info.actors=:a",
-            // ExpressionAttributeValues:{
-            //     ":r":5.5,
-            //     ":p":"Everything happens all at once.",
-            //     ":a":["Larry", "Moe", "Curly"]
-            // },
+            UpdateExpression: "set updated_at = :t",
+            ExpressionAttributeValues:{
+                ":t":updated_at
+            },
             ReturnValues:"UPDATED_NEW"
         };
         
@@ -84,8 +131,10 @@ function update(req,callback){
         docClient.update(params, function(err, data) {
             if (err) {
                 console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+                callback(err)
             } else {
                 console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+                callback(null,data)
             }
         });
     } catch (error) {
@@ -115,9 +164,10 @@ function del(obj,callback) {
         docClient.delete(params, function (err, data) {
             if (err) {
                 console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
-                callback(error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2)))
+                callback(err)
             } else {
                 console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+                callback(data)
             }
         });
 
@@ -129,7 +179,9 @@ function del(obj,callback) {
 
 
 module.exports = {
-  read : read,  
-  write : write,
-  del : del
+  read,  
+  write,
+  del,
+  update,
+  scan
 }

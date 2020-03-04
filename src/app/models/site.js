@@ -87,8 +87,10 @@ function update(req,callback){
         docClient.update(params, function(err, data) {
             if (err) {
                 console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+                callback(err)
             } else {
                 console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+                callback(null,data)
             }
         });
     } catch (error) {
@@ -98,7 +100,7 @@ function update(req,callback){
 
 
 /////////////////////////delete item///////////////////////////
-function del(obj,callback) {
+function del(req,callback) {
     try {
         var table ='site'
 
@@ -118,9 +120,10 @@ function del(obj,callback) {
         docClient.delete(params, function (err, data) {
             if (err) {
                 console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
-                callback(error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2)))
+                callback(err)
             } else {
                 console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+                callback(null,data)
             }
         });
 

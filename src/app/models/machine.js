@@ -6,24 +6,24 @@ AWS.config.update(config.dynamoDb);
 var docClient = new AWS.DynamoDB.DocumentClient();
 
 /////////////////////Read an Item///////////////////////
-function read(callback){
+function read(req,callback){
     try {
-        var table = "Machines";
+        var table = "machine";
 
         var params = {
             TableName: table,
             Key: {
-                "EquipmentType": 2,
-                "SourceIdentifierKey": 'deviceSerial'
+                "machine_id": req.body.machine_id,
             }
         };
 
         docClient.get(params, function (err, data) {
             if (err) {
                 console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
-                callback(error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2)))
+                callback(err)
             } else {
                 console.log("GetItem succeeded:", JSON.stringify(data, null, 2));
+                callback(null,data)
             }
         });
     } catch (error) {
@@ -35,28 +35,27 @@ function read(callback){
 function write(callback) {
     try {
         console.log("Importing machines data into DynamoDB. Please wait.");
-
-    var allMachines = JSON.parse(fs.readFileSync('./machine.json', 'utf8'));
+    var created_at = updated_at =Date.now()
+    var allMachines = JSON.parse(req.body);
     console.log(allMachines)
-    allMachines.forEach(function (machine1) {
+    allMachines.forEach(function (machine) {
         var params = {
             TableName: "Machines",
             Item: {
-                "EquipmentType": machine1.EquipmentType,
-                "SourceIdentifierKey": machine1.SourceIdentifierKey,
-                "Version": machine1.Version,
-                "Supplier": machine1.Supplier,
-                "Name": machine1.Name,
-                "KPI": machine1.KPI
+                "machine_id": machine.EquipmentType,
+                "parameters": machine.parameters,
+                 "created_at" : created_at,
+                 "updated_at" : updated_at
             }
         };
 
         docClient.put(params, function (err, data) {
             if (err) {
-                console.error("Unable to put machine data", machine1.SourceIdentifierKey, ". Error JSON:", JSON.stringify(err, null, 2));
-                return callback(new error("Unable to put machine data", machine1.SourceIdentifierKey, ". Error JSON:", JSON.stringify(err, null, 2)))
+                console.error("Unable to put machine data",JSON.stringify(err, null, 2));
+                return callback(err)
             } else {
                 console.log("PutItem succeeded:", machine1.SourceIdentifierKey);
+                return callback(null,data)
             }
         });
     });
@@ -70,11 +69,11 @@ function write(callback) {
 function scan(callback) {
     try {
         var params = {
-            TableName: "Machines",
-            ProjectionExpression: "#type, SourceIdentifierKey",
+            TableName: "machine",
+            ProjectionExpression: "#id, parameters",
             //FilterExpression: "#yr between :start_yr and :end_yr",
             ExpressionAttributeNames: {
-                "#type": "EquipmentType"
+                "#id": "machine_id"
             },
             /* ExpressionAttributeValues: {
                   ":start_yr": 1950,
@@ -88,12 +87,12 @@ function scan(callback) {
         function onScan(err, data) {
             if (err) {
                 console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
-                return callback(new error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2)));
+                return callback(err);
             } else {
                 // print all the machines data
                 console.log("Scan succeeded.");
                 data.Items.forEach(function (machine) {
-                    console.log(machine.EquipmentType + ": ", "Key", machine.SourceIdentifierKey);
+                    console.log(machine.machine_id + ": ", machine.parameters);
                 });
     
                 // continue scanning if we have more machines, because
@@ -103,6 +102,7 @@ function scan(callback) {
                     params.ExclusiveStartKey = data.LastEvaluatedKey;
                     docClient.scan(params, onScan);
                 }
+                return callback(null,data)
             }
         }
     } catch (error) {
@@ -112,34 +112,34 @@ function scan(callback) {
 }
 
 /////////////////////////delete item///////////////////////////
-function del(obj,callback) {
+function del(req,callback) {
     try {
-        var table ='Machines'
+        var table ='machine'
 
         var params = {
             TableName: table,
             Key: {
-                "EquipmentType": obj.EquipmentType,
-                "SourceIdentifierKey": obj.SourceIdentifierKey
+                "machine_id": req.body.machine_id,
             },
-            ConditionExpression: "KPI[0].Dur > :val",
-            ExpressionAttributeValues: {
-                ":val": 50
-            }
+            // ConditionExpression: "KPI[0].Dur > :val",
+            // ExpressionAttributeValues: {
+            //     ":val": 50
+            // }
         };
 
-        console.log("Attempting a conditional delete...");
+        //console.log("Attempting a conditional delete...");
         docClient.delete(params, function (err, data) {
             if (err) {
                 console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
-                callback(error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2)))
+                return callback(err)
             } else {
                 console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+                return callback(null,data)
             }
         });
 
     } catch (error) {
-        callback(error)
+        return callback(error)
     }
 
 }

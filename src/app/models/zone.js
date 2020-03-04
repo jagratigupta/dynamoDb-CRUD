@@ -13,8 +13,7 @@ function read(req,callback){
         var params = {
             TableName: table,
             Key: {
-                "zone_id": "swd"
-            
+                "zone_id": req.body.zone_id
             }
         };
 
@@ -35,8 +34,7 @@ function read(req,callback){
 function write(req,callback) {
     try {
         console.log("Importing zone data into DynamoDB. Please wait.");
-        var created_at = Date.now();
-        console.log("timeStamp",created_at);
+        var created_at =updated_at= Date.now();
         var params = {
             TableName: "zone",
             Item: {
@@ -50,7 +48,7 @@ function write(req,callback) {
         docClient.put(params, function (err, data) {
             if (err) {
                 console.error("Unable to put zone data",". Error JSON:", JSON.stringify(err, null, 2));
-                return callback(new error("Unable to put zone data",". Error JSON:", JSON.stringify(err, null, 2)))
+                return callback(err)
             } else {
                 console.log("PutItem succeeded",data);
                 return callback(null,data)
@@ -66,13 +64,16 @@ function write(req,callback) {
 function update(req,callback){
     try {
         var table = "zone";
+        var updated_at = Date.now()
         var params = {
             TableName:table,
-            Key:{
-                "year": year
-                
+            Key: {
+                "zone_id": req.body.zone_id
             },
-            
+            UpdateExpression: "SET updated_at = :time",
+            ExpressionAttributeValues: { 
+                ":time": updated_at
+            },
             ReturnValues:"UPDATED_NEW"
         };
         
@@ -80,8 +81,10 @@ function update(req,callback){
         docClient.update(params, function(err, data) {
             if (err) {
                 console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+                callback(err)
             } else {
                 console.log("UpdateItem succeeded:", JSON.stringify(data, null, 2));
+                callback(null,data)
             }
         });
     } catch (error) {
@@ -91,15 +94,14 @@ function update(req,callback){
 
 
 /////////////////////////delete item///////////////////////////
-function del(obj,callback) {
+function del(req,callback) {
     try {
         var table ='zone'
 
         var params = {
             TableName: table,
             Key: {
-                "zone_id": "swd"
-                
+                "zone_id": req.body.zone_id
             },
            // ConditionExpression: "",
             // ExpressionAttributeValues: {
@@ -111,9 +113,10 @@ function del(obj,callback) {
         docClient.delete(params, function (err, data) {
             if (err) {
                 console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
-                callback(error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2)))
+                callback(err)
             } else {
                 console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+                callback(null,data)
             }
         });
 
@@ -125,8 +128,8 @@ function del(obj,callback) {
 
 
 module.exports = {
-  read : read,  
-  write : write,
-  del : del,
-  update:update
+  read,  
+  write,
+  del,
+  update
 }
