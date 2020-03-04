@@ -1,14 +1,22 @@
 var AWS = require("aws-sdk");
 
 AWS.config.update({
-  region: "ap-south-1",
-  endpoint: "http://localhost:8000"
+    accessKeyId: "AKIARISLY47F3R3VGJUC", 
+    secretAccessKey: "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",
+  region: "ap-south-1"
+//   endpoint: "http://localhost:8000"
 });
 
+console.log("abcd");
 var dynamodb = new AWS.DynamoDB();
 
+
+function createNewTable (req,callback){ 
+
+
 var params = {
-    TableName : "Movies",
+    TableName : "Movies123",
+    // BillingMode: "PAY_PER_REQUEST",
     KeySchema: [       
         { AttributeName: "year", KeyType: "HASH"},  //Partition key
         { AttributeName: "title", KeyType: "RANGE" }  //Sort key
@@ -30,3 +38,13 @@ dynamodb.createTable(params, function(err, data) {
         console.log("Created table. Table description JSON:", JSON.stringify(data, null, 2));
     }
 });
+
+}
+
+
+createNewTable();
+
+
+module.exports = {
+    createNewTable:createNewTable
+}

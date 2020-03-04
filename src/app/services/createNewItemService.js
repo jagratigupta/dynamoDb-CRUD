@@ -1,16 +1,18 @@
 var AWS = require("aws-sdk");
 
 AWS.config.update({
-  region: "ap-south-1",
-  endpoint: "http://localhost:8000"
+    accessKeyId: "AKIARISLY47F3R3VGJUC", 
+    secretAccessKey: "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",
+  region: "ap-south-1"
+//   endpoint: "http://localhost:8000"
 });
-
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-var table = "Movies";
+var table = "Movies123";
 
 var year = 2015;
 var title = "The Big New Movie";
+
 
 var params = {
     TableName:table,
