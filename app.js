@@ -1,5 +1,7 @@
 var express = require('express');
 const factory = require('./src/app/controllers/factoryController');
+const site = require('./src/app/controllers/siteController');
+
 const bodyParser=require("body-parser"); 
 // const swaggerUi = require('swagger-ui-express');
 // const swaggerDocument = require('./swagger/swagger');
@@ -10,7 +12,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
 
-app.use('/factory',factory);
+app.use('/site',site);
 
 // var options = {
 //     explorer: true

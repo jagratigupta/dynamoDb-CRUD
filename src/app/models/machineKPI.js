@@ -9,12 +9,12 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 /////////////////////Read an Item///////////////////////
 function read(req,callback){
     try {
-        var table = "factory"
+        var table = "machineKPI"
         var params = {
             TableName: table,
             Key: {
-                "factory_id": "truminds",
-                "location": 'hydra'
+                "machine_ID":"Mcahine_ID",
+                "time" :"time"
             }
         };
 
@@ -34,22 +34,25 @@ function read(req,callback){
 
 function write(req,callback) {
     try {
-        console.log("Importing factory data into DynamoDB. Please wait.");
+        console.log("Importing MachineKPI data into DynamoDB. Please wait.");
         var created_at = Date.now();
         console.log("timeStamp",created_at);
         var params = {
-            TableName: "factory",
+            TableName: "site",
             Item: {
-                "factory_id": req.body.factory_id,
-                "location": req.body.location,
-                "created_at": created_at
+                "machine_ID": req.body.machine_ID,
+               "time": req.body.time,
+                "KPI1":req.body.location,
+                "updated_at":req.body.updated_at,
+                "created_at": created_at,
+                "address":req.body.address
             }
         };
 
         docClient.put(params, function (err, data) {
             if (err) {
-                console.error("Unable to put factory data",". Error JSON:", JSON.stringify(err, null, 2));
-                return callback(new error("Unable to put machine data",". Error JSON:", JSON.stringify(err, null, 2)))
+                console.error("Unable to put site data",". Error JSON:", JSON.stringify(err, null, 2));
+                return callback(new error("Unable to put site data",". Error JSON:", JSON.stringify(err, null, 2)))
             } else {
                 console.log("PutItem succeeded",data);
                 return callback(null,data)
@@ -64,12 +67,12 @@ function write(req,callback) {
 
 function update(req,callback){
     try {
-        var table = "factory";
+        var table = "site";
         var params = {
             TableName:table,
             Key:{
-                "year": year,
-                "title": title
+                "site_id": site_id,
+                "factory_id": factory_id
             },
             // UpdateExpression: "set info.rating = :r, info.plot=:p, info.actors=:a",
             // ExpressionAttributeValues:{
@@ -97,13 +100,13 @@ function update(req,callback){
 /////////////////////////delete item///////////////////////////
 function del(obj,callback) {
     try {
-        var table ='factory'
+        var table ='site'
 
         var params = {
             TableName: table,
             Key: {
-                "factory_id": req.body.factory_id,
-                "location": req.body.location
+                "site_id": req.body.site_id,
+                "factory_id": req.body.factory_id
             },
            // ConditionExpression: "",
             // ExpressionAttributeValues: {
@@ -131,5 +134,6 @@ function del(obj,callback) {
 module.exports = {
   read : read,  
   write : write,
-  del : del
+  del : del,
+  upadte:update
 }
