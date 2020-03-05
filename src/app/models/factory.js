@@ -117,17 +117,12 @@ function update(req,callback){
         var params = {
             TableName:table,
             Key:{
-<<<<<<< HEAD
                 "factory_id": req.body.factory_id,
                 "location": req.body.location
             },
             UpdateExpression: "set updated_at = :t",
             ExpressionAttributeValues:{
                 ":t":updated_at
-=======
-                "factory_id": "truminds",
-                "location": 'hydra'
->>>>>>> 76a0205dbeebf09d8870b2a37454c855dbd82819
             },
             ReturnValues:"UPDATED_NEW"
         };
@@ -171,14 +166,8 @@ function del(obj,callback) {
                 console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
                 callback(err)
             } else {
-<<<<<<< HEAD
                 console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
                 callback(data)
-=======
-                if(Object.keys(data).length>1)
-                    console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
-                else console.log("no item")
->>>>>>> 76a0205dbeebf09d8870b2a37454c855dbd82819
             }
         });
 

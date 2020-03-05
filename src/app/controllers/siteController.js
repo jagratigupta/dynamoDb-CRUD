@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var rs = require('../utilities/responseStructure');
-
 const site = require('../models/site')
 
 

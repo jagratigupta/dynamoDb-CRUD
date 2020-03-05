@@ -1,7 +1,7 @@
 var express = require('express');
 const factory = require('./src/app/controllers/factoryController');
 const site = require('./src/app/controllers/siteController');
-//const machine = require('./src/app/controllers/machineController');
+const machine = require('./src/app/controllers/machineController');
 
 const zone = require('./src/app/controllers/zoneController');
 const bodyParser=require("body-parser"); 
@@ -13,12 +13,11 @@ const http = require("http")
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-
+app.use('/factory',factory);
 app.use('/site',site);
+app.use('/zone',zone)
 app.use('/machine',machine);
 
-app.use('/factory',factory);
-app.use('/zone',zone)
 // var options = {
 //     explorer: true
 // };
