@@ -129,14 +129,9 @@ function del(req,callback) {
                 console.error("Unable to delete item. Error JSON:", JSON.stringify(err, null, 2));
                 callback(err)
             } else {
-<<<<<<< HEAD
-                console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
-                callback(null,data)
-=======
                 if(Object.keys(data).length>1)
                     console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
                 else console.log("no item")
->>>>>>> 76a0205dbeebf09d8870b2a37454c855dbd82819
             }
         });
 
