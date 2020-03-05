@@ -117,17 +117,8 @@ function update(req,callback){
         var params = {
             TableName:table,
             Key:{
-<<<<<<< HEAD
-                "factory_id": req.body.factory_id,
-                "location": req.body.location
-            },
-            UpdateExpression: "set updated_at = :t",
-            ExpressionAttributeValues:{
-                ":t":updated_at
-=======
                 "factory_id": "truminds",
                 "location": 'hydra'
->>>>>>> 76a0205dbeebf09d8870b2a37454c855dbd82819
             },
             ReturnValues:"UPDATED_NEW"
         };
