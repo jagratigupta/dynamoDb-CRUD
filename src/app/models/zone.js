@@ -35,16 +35,16 @@ function write(req,callback) {
     try {
         console.log("Importing zone data into DynamoDB. Please wait.");
         var created_at =updated_at= Date.now();
-        var params = {
-            TableName: "zone",
-            Item: {
-                "zone_id": req.body.zone_id,
-                "site_id":req.body.site_id,
-                "updated_at":updated_at,
-                "created_at": created_at
-            }
-        };
-
+            var params = {
+                TableName: "zone",
+                Item: {
+                    "zone_id": req.body.zone_id,
+                    "site_id":req.body.site_id,
+                    "updated_at":updated_at,
+                    "created_at": created_at
+                }
+            };
+          console.log(params)
         docClient.put(params, function (err, data) {
             if (err) {
                 console.error("Unable to put zone data",". Error JSON:", JSON.stringify(err, null, 2));

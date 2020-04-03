@@ -9,12 +9,12 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 /////////////////////Read an Item///////////////////////
 function read(req,callback){
     try {
-        var table = "site1"
+        var table = "site"
         var params = {
             TableName: table,
             Key: {
                 "site_id": "cyberhub",
-                 "factory_id": "truring",
+                 "factory_id": "truring"
             }
         };
 
@@ -39,7 +39,7 @@ function write(req,callback) {
         var created_at = Date.now();
         console.log("timeStamp",created_at);
         var params = {
-            TableName: "site1",
+            TableName: "site",
             Item: {
                 "site_id": req.body.site_id,
                 "factory_id": req.body.factory_id,
@@ -68,7 +68,7 @@ function write(req,callback) {
 
 function update(req,callback){
     try {
-        var table = "site1";
+        var table = "site";
         var p=req.body;
         console.log(p)
         var params = {
